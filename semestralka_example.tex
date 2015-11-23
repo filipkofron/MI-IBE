@@ -169,6 +169,14 @@
         Server OpenVPN dokáže publikovat určité síťové nastavení svým klientům. Tyto zahrnují přiřazené IP adresy, příkay routování a další spojené s připojením.
         OpenVPN nabízí dva typy rozhraní pro vytvoření síťe pomocí univerzálího TUN/TAP ovladače. Dokáže vytvořit jak IP tunely OSI vrstvy 3 (TUN), tak Ethernet TAP (OSI vrstva 2), která dokáže přenášet jakýkoliv ethernetový provoz. Dále také umožnuje komprimovat proudově přenšená data.
 
+      \subsubsection{Šifrování}
+        OpenVPN používá k šifrování dat a kontrolního provozu knihovnu OpenSSL. Nechávý knihovnu OpenSSL dělat veškeré šífrovací i autentizační práci. OpenVPN tak může využít veškerých šifer implementovaných v balíčku knihovny OpenSSL.
+
+        Může také využívat prvek paketové HMAC autentizace, aby tak obalil stávájící zabezpečení připojeni další vrstvou (tvůrce to označuje jako HMAC Firewall). Může také používat hardwarovou akceleraci, aby bylo dosaženo lepšího výkonu šifrování.\cite{openvpn_enc_1}\cite{openvpn_enc_2}
+
+        Podpora PolarSSL je k dispozici od verze 2.3 a vyšší.\cite{openvpn_enc_3}
+
+
     \subsection{PPTP}
 
       \subsubsection{Popis}
