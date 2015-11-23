@@ -86,13 +86,98 @@
 
 \chapter{Typy}
 
-  \section{Frame Relay}
+  Typy druhů VPN jsou zde rozdělené podle vrstev OSI modelu, na kterých probíhá ona virtualizace. U VPN se setkaváme s vrstvami 2, 2.5 (případ MPLS) a 3.
 
-    \subsection{TODO}
+  \section{OSI vrstva 2}
 
-  \section{Asynchronous Transfer Mode}
-  \section{IP}
-  \section{Multiprotocol Label Switching}
+  Typy VPN na OSI vrstvě 2 virtualizují pomocí rámců.
+
+    \subsection{Frame Relay}
+
+      \subsubsection{Popis Frame Relay}
+
+        Přepínání rámců (Frame relay) je standardizovaná technologie pro WAN (wide area network), který specifikuje jak fyzické, tak logické linkové vrstvy digitalních telekomunikačních kanálů používající přepínání packetů (packet switching). Navržena původně pro přenost přes Integrated Services Digital Network (ISDN), může i dnes být tato technologie použita v kontextu mnoha jiných síťových rozhraních.
+
+        Poskytovatelé připojení obvykle implementují Voice and Data Frame Relay (VoFR) jako techniku zabalení provozu. Často je tak  použito mezi lokálními síťemi (LAN) přes rozsáhlé sítě WAN. Každý koncový uživatel takto získá soukromé nebo prpnajaté spojení do uzlu Frame Relay. Frame relay síť řídí přenos přes často se měnící cestu transparentně do všech cílových masově používaných WAn protokolů. Je mnohem méně nákladnější než pronajaté linky a to je jeden z hlavních důvodů pro jeho popularitu. Extrémní jednoduchost konfigurace uživatelských zařízeních v frame relay síti nabízí další důvod pro jeho popularitu.
+
+        S nástupem ethernetu přes optické kabely, MPLS a dedikovaných propojovacích služeb jako jsou kabelový modem či DSL je zájem o frame relay protokol a jeho zaobalování provozu čím dál méně žádané. Přesto se však stále uplatňují v oblastech kde DSL a kabelové modemy nejsou k dispozici. V takovýchto případech zůstává jako nejlevnjší metoda nevytáčeného spojení 64 kbit/s frame relay linka. \cite{frame_relay_basics}
+
+      \subsubsection{Frame Relay jako VPN}
+
+        Frame relay sice umožňuje provozovat VPN, ale naprosto zásadní důvod, proč se dnes již jako VPN příliš nepoužíva, je ten, že jeho provoz není šifrovaný. Veškerá bezpečnost závisí na poskytovali. Ten je vlastně dalším důvodem, proč je Frame Relay jako VPN nevhodný. Všechny připojené uzly VPN musí sdílet stejného poskytovatele Frame Relay. To je velmi nevhodné, pokud uživateli takové sítě jsou společnosti, které mají pobočky na geograficky velmi odlehlých oblastech. \cite{frame_relay_vs_vpn}
+
+    \subsection{Asynchronous Transfer Mode}
+
+      \subsubsection{Popis ATM}
+        Asynchronous Transfer Mode, zkráceně ATM, byl v osmdesátých a devadesátých letech standard pro vysokorychlostní (155 Mbps až 622 Mbps) síťovou architekturu. Zabezpečuje Quality of Service (QoS) pro přenos hlasu a videa. Dříve byl označován jako telefonie „další generace“ (technické kořeny v telefonním světě). Umožňuje přenos IP datagramů. Pracuje s přepojováním paketů (pakety pevné délky, zvané buňky, anglicky cell) užitím virtuálních okruhů.
+
+        Je to síťový protokol přenosu dat po buňkách, který rozděluje přenos dat na malé kousky (buňky) s pevnou délkou (53 bytů; 48 bytů dat a 5 bytů záhlaví) místo paketů, které se délkou liší (užívané v LAN). Je to technologie orientovaná na spojení, ve které spojení je vytvořeno mezi dvěma koncovými body ještě předtím, než začne výměna dat.\cite{atm_wiki}
+
+      \subsubsection{VPN pomocí ATM}
+
+        VPN přes ATM má stejné nevýhody jako u VPN přes Frame relaz. Stejne jako Frame Relay ATM pouze zaobaluje určitou komunikaci.
+        \cite{atm_vpn}
+
+  \section{OSI vrstva 2.5}
+
+    \subsection{Multiprotocol Label Switching}
+
+      \subsubsection{Popis}
+
+      \subsubsection{MPLS a VPN}
+
+  \section{OSI vrstva 3}
+
+    Typy VPN na OSI vrstvě 3 se lyší zejména protokoly, ale dosahují zhruba stejných výkonů. Pracují obvykle na veřejných sítích typu internet, a proto je u ních těžší zajistit kvalitu služeb (Quality of Service - QoS).
+
+    \subsection{IPsec}
+
+      \subsubsection{Popis}
+        Internet Protocol Security (IPsec) je sada protokolů pro zabezpečení internetových protokolů (Internet Protocol - IP) sloužících ke komunikaci s autentizací a šifrováním každého IP paketu z celého provozu komunikace. IPsec obsahuje protokoly pro zprostředkování vzájemné autentizace mezi agenty na začátku sezení a výměna krzptografických klíčů, které se použijí v průběhu sezení. IPSec může být použít pro ochranu dat tekoucích mezi dvoumi hosty (host-to-host), mezi dvoumi zabezpečenými bránami (network-to-network) nebo mezi zabezpečenými bránami a hostem (network-to-host).
+
+        Zabezpečení internetového protokolu používa zabezpečení pomocí kryptografických služeb, které slouží k ochraně komunikací přes IP síťě. IPSec podporuje autentizaci na úrovní síťe, autentizaci původu dat, zajišťuje datovou integritu, důvěrnost dat a také ochranu proti tzv. Replay útoku.
+
+        IPSec je tzv. koncové zabespečévací schéma (end-to-end) operující ve vrstvě TCP/IP (Internet Protocol Suite), kdežto jiné používané zabezpečovací systémy internetu, kterými jsou například Transport Layer Security (TLS) a Secure Shell (SSH), operují ve vyšších vrstvách v tzv. aplikační vrstvě OSI modelu. IPsec však chrání veškerý provoz po IP síti. Tím jsou automaticky všechny aplikace zabezpečené na vrstvě IP.
+        \cite{ipsec_basics}
+
+      \subsubsection{IPsec a VPN}
+
+        IPsec umožňuje vytvořit transparentně šifrovaný tunel mezi hosty. Poskytuje tak hlavní výhody zabezpečení VPN. \cite{ipsec_vpn}
+
+
+    \subsection{OpenVPN}
+
+      OpenVPN je velmi zajímavým VPN, který je jak svobodný, tak široce rozšířen. Proto se mu bude tato podsekce věnovat více do hloubky než ostatním, které buď zastarávají nebo jsou komerční varianty.
+
+      \subsubsection{Základní popis}
+
+        OpenVPN je svobodný software s otevřeným zdrojovým kódem, který implementuje techniky virtuální privátní síťe (VPN) pro vytváření point-to-point nebo site-to-site spojení v routované nebo přemostěné konfiguraci (bridged) a pro řízení vzdáleného přístupu. Používá svůj vlastní bezpečnostní protokol\cite{openvpn_basics_1}, který využíva SSL/TLS pro výměnu klíčů. Tento protokol dokáže traverzovat překladače síťových adres (NAT) a firewally. Prvotně byl napsán Jamesem Yonanem a je publikován pod licencí GNU General Public License (GPL).\cite{openvpn_basics_2}
+
+        OpenVPN dovoluje autentizovat své připojené členy použitím tzv. před-sdíleného klíče (pre-shared secret key), certifikátů nebo kombinací uživatelského jména a hesla. Když je použit ve více-klientské konfiguraci, pak OpenVPN umožňuje, aby server zpřístupňil autentizační certifikát zvlášť pro každého uživatele za použití podpisů a certifikační autority. Stejně jako OpenSSL využíva naplno šifrovací knihovny OpenSSL a protokol SSLv3/TLSv1. Obsahuje velmi mnoho bezpečnostních a kontrolních prvků.
+
+        OpenVPN byl portován na spoustu systémů a architektur, je používán v mnoho zabudovaných (embedded) systémech. Jako příklad lze uvést DD-WRT, který obsahuje OpenVPN server. Další například pouze implementují protokol OpenVPN, jako například SoftEther VPN, který implementuje celou řadu VPN protokolů.
+
+        Kolem OpenVPN vznikla silná komunita, je dostupný pro všechny známé operační systémy.
+
+      \subsubsection{Síťová implementace}
+
+        OpenVPN dokáže běžet přes User Datagram Protocol (UDP) nebo Transmission Control Protocol (TCP), multiplexujíce vytvořené SSL tunely na jediném TCP/UDP protu\cite{openvpn_tls_mode_options} (RFC 3948 pro UDP).\cite{openvpn_udp}
+
+        Od verze 2.3.x dál OpenVPN plně podporuje IPv6 jako protokol virtuální sítě uvnitř tunelu a OpenVPN aplikace tak mohou navazovat spojení pomocí IPv6.\cite{openvpn_community_wiki}
+
+        Dokáže pracovat skrze většinu proxy serverů (dokonce i HTTP proxy) a velmi dobře zvládá komunikaci i skrze překladače síťových adres (NAT). Obvykle nebývá blokován různými firewally.
+        Server OpenVPN dokáže publikovat určité síťové nastavení svým klientům. Tyto zahrnují přiřazené IP adresy, příkay routování a další spojené s připojením.
+        OpenVPN nabízí dva typy rozhraní pro vytvoření síťe pomocí univerzálího TUN/TAP ovladače. Dokáže vytvořit jak IP tunely OSI vrstvy 3 (TUN), tak Ethernet TAP (OSI vrstva 2), která dokáže přenášet jakýkoliv ethernetový provoz. Dále také umožnuje komprimovat proudově přenšená data.
+
+    \subsection{PPTP}
+
+      \subsubsection{Popis}
+        \cite{pptp_basics}
+
+    \subsection{L2TP}
+
+      \subsubsection{Popis}
+        \cite{l2tp_basics}
 
 \chapter{Zabezpečení}
 
