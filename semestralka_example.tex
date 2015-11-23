@@ -86,11 +86,11 @@
 
 \chapter{Typy}
 
-  Typy druhů VPN jsou zde rozdělené podle vrstev OSI modelu, na kterých probíhá ona virtualizace. U VPN se setkaváme s vrstvami 2, 2.5 (případ MPLS) a 3.
+  Typy druhů VPN jsou zde rozdělené podle vrstev OSI modelu, na kterých probíhá ona virtualizace (ne co se na nich virtualizuje). U VPN se setkaváme s vrstvami 2, 2.5 (případ MPLS) a 3.
 
   \section{OSI vrstva 2}
 
-  Typy VPN na OSI vrstvě 2 virtualizují pomocí rámců.
+	Typy VPN na OSI vrstvě 2 virtualizují pomocí rámců.
 
     \subsection{Frame Relay}
 
@@ -123,9 +123,31 @@
     \subsection{Multiprotocol Label Switching}
 
       \subsubsection{Popis}
+	  
+		  Multiprotokolové přepojování podle návěští (anglicky Multiprotocol Label Switching, MPLS) je mechanismus směrování síťového provozu používaný ve vysokorychlostních telekomunikačních sítích, který pro směrování dat mezi síťovými uzly nepoužívá relativně dlouhé a protokolově závislé síťové adresy, ale krátká návěští pevné délky.
+		  Tím se obchází prohledávání směrovacích tabulek. Návěští neidentifikují koncové body, ale virtuální spoje (cesty) mezi vzdálenými uzly. MPLS může zapouzdřovat pakety různých síťových protokolů a pro přenos používat nejrůznější technologie včetně linek T1 a E1, ATM, Frame Relay a DSL.
 
       \subsubsection{MPLS a VPN}
 
+		MPLS VPN je rodina metod pro využití výkonu multiprotokolové přepojování podle návěští (MPLS) k vytvoření VPN.
+		MPLS VPN dává síťovým správcům flexibilitu transportovat a routovat různé typy síťového provozu použitím technologií MPLS.
+
+		V praxi se pužívají 3 typy MPLS VPN:
+		
+		\begin{itemize}
+		  \item Point-to-point (Pseudowire)
+		  \item Layer 2 (VPLS)
+		  \item Layer 3 (VPRN)
+		\end{itemize}
+		
+		Point-to-Point MPLS VPN používají VLL (virtual leased lines - virtuální pronajaté linky) k poskytování point-to-point konektivity 2. úrovně mezi dvěma oblastmi. Ethernet, TDM a ATM rámce mohou být přenášeny (zaobaleny) v těchto VLL linkách.
+		
+		MPLS VPN úrovně 2 (Layer 2) nebo VPLS (virtuální privátní LAN služba - virtual private LAN service) nabízí "přepínač v cloudu". VPLS poskytuje možnost zozšířit VLAN mezi více vzdálenými oblastmi. VPN druhé úrovně jsou typicky použity k routování zvuku, videa a AMI provozu mezi stanicemi a datovými centry.
+		
+		MPLS VPN úrovně 3 nebo VPRN (virtuální privátní routovaná síť - virtual private routed network), využívá VRF 3. úrovně (VPN/virtuální routování a forwarding) k segmentování routovacích tabulek pro každého zákazníka služby.
+		Zákazník se spáruje s routerem poskytovatele služby a prohodí si routání, které se ukládá do speciálního zákaznického routovací tabulky. Multiprotokolové BGP (MP-BGP) je potřebné v cloudu k provozu služby, které zvyšuje komplexitu a náročnost implementace.
+		LMPLS VPN úrovně 3 nejsou typicky nasazovány na sítě poskytovatelů připojení kvůli jejich komplexitě however, VPN 3. úrovně se spíše používá k routování provozu mezi korporátními oblastmi a datacentry.
+		\cite{mpls_rfc}\cite{mpls_guide}
   \section{OSI vrstva 3}
 
     Typy VPN na OSI vrstvě 3 se lyší zejména protokoly, ale dosahují zhruba stejných výkonů. Pracují obvykle na veřejných sítích typu internet, a proto je u ních těžší zajistit kvalitu služeb (Quality of Service - QoS).
@@ -147,7 +169,7 @@
 
     \subsection{OpenVPN}
 
-      OpenVPN je velmi zajímavým VPN, který je jak svobodný, tak široce rozšířen. Proto se mu bude tato podsekce věnovat více do hloubky než ostatním, které buď zastarávají nebo jsou komerční varianty.
+      OpenVPN je velmi zajímavým VPN bežícím v uživatelském prostoru, který je jak svobodný, tak široce rozšířen. Proto se mu bude tato podsekce věnovat více do hloubky než ostatním, které buď zastarávají nebo jsou komerční varianty.
 
       \subsubsection{Základní popis}
 
@@ -176,22 +198,52 @@
 
         Podpora PolarSSL je k dispozici od verze 2.3 a vyšší.\cite{openvpn_enc_3}
 
+	  \subsubsection{Zabezpečení}
+	  
+		OpenVPN nabízí mnoho interních zabezpečovacích prvků. Dokáže použít šifrování až do šířky 256 bitů pomocí knihovny OpenSSL, přesto však někteří poskytovatelé nabízejí nižší šířku aby dosáhli rychlejšího spojení (s šifrováním je spojen výpočetní overhead).\cite{openvpn_sec}
+		OpenVPN beží v uživatelském prostoru, nevyžaduje tedy zasahovat do IP stacku jádra. OpenVPN umí zanechat svá administrátorská práva, aby efektivně pracoval s nižšími oprávněními. Dále umí využít mlockall, aby předešel zápisu citlivých dat na disk v případě odložení (swapování), vstoupit do vězení typu chroot a aplikovat SELinux kontext po inicializaci.
 
+		Používá vlastní protokol postavený na SSL a TLS místo toho, aby podporoval IPSec, L2TP nebo PPTP. OpenVPN nabízí podporu smart čipových karet pomocí PKCS\#11 k autentizaci šifrovacími klíči.
+		
     \subsection{PPTP}
 
       \subsubsection{Popis}
-        \cite{pptp_basics}
+       
+		Point-to-Point tunelovací protokol (PPTP) je metoda pro implementování virtualních privátních sítí. PPTP používá kontrolné kanál přes TCP a GRE tunel obalující PPP pakety.
 
+		Specifikace PPTP nepopisuje šifrování nebo autentizační prvky a spoléhá na to, že Point-to-Point protokol bude provozován skrze tunel, aby se zajistily bezpečnostní funkcionalita.
+		Nejrozšířenější implementace PPTP je však dodávána s operačním systémem Microsoft Windows, které implementují různé úrovně autentizace a šifrování nativně jako standardní součást stacku PPTP ve Windows.
+		Předpokládaný účel tohoto protokolu je poskytnout zabezpečení a vzdálený přístup na úrovni srovnatelný s jinými typickými VPN produkty.
+
+		Specifikace PPTP byla publikována v červenci 1999 v RFC 2637\cite{pptp_basics} a byla vyvinuta sdružením společností Microsoft, Ascend Communications, 3Com a dalších. PPTP nebylo navrhnuto ani schváleno jako standard komisí pro technickou stránku internetu (Internet Engineering Task Force).
+		
+	  \subsubsection{Bezpečnost PPTP}
+	  
+		PPTP bylo podrobeno mnoha bezpečnostním analýzám a v tomto protokolu byly nalezeny závažné bezpečnostní problémy.
+		Známe zranitelnosti souvisí s použitým ověřovacím protokolem PPP, s designem MPPE šifrování (Microsoft Point-to-Point Encryption) protokolu stejně jako s integrací autentizace mezi MPPE a PPP pro navázání klíče sezení (session key).\cite{pptp_unsec_1}\cite{pptp_unsec_2}
+		
     \subsection{L2TP}
-
+	
       \subsubsection{Popis}
+		L2TP je protokol pro zabezpeční tunelu k přenosu IP provozu použitím PPP. L2TP zaobaluje PPP ve virtualních linkách, které běží přes IP, Frame Relay nebo jiné protokoly.
+		L2TP používá PPP a MPPE k zašifrování spojení. Účel tohoto protokolu je umožnit provozu 2. vrstvy OSI modelu a koncovým bodům PPP ležet na jiných zařízeních spojených sítí s přepínáním paketů. S L2TP má uživatel spojení 2. vrstvy do přístupového koncetrátoru (access concentrator - LAC), což může být modem, ADSL DSLAM atd. a koncentrátor, který tuneluje individuální PPP rámce do (Network Access Server - NAS). Toto umožňuje vlastní zpracování PPP paketů oddělené od konců spojení 2. vrstvy. Z uživatelského pohledu není žádný funkční rozdíl mezi tím mít konce spojení 2. úrovně končíce v NASu přímo nebo při použití L2TP.
+
+		Je užitečné používat L2TP jako kterýkoliv jiný tunelovací protokol s nebo bez šifrování. Standard L2TP říká, že nejbezpečnější formou, jak zašifrovat data, je použit L2TP přes IPsec (toto je výchozí pro klienta L2TP od Microsoftu), jelikož veškeré kontrolní či datové pakety pro určitý tunel se jeví jako homogenní UDP/IP pakety v IPsec systému.
+
+		Vícelinkové PPP (Multilink PPP - MP) je podporováno, aby poskytlo MRRU (umožnění posílat pakety s plnou velikostí 1500 a větší) a zároveň přemostění (bridge) přes PPP linky (pomocí Bridge Control protokolu (BCP), který dovoluje posílat holé ethernetové rámce přes PPP linky. Touto cestou je možné nastavit přemostení bez použití ethernet přes IP (Ethernet over IP - EoIP). Most by měl mít administrátorsky nastavenou MAC adresu nebo ethernetu podobné rozhraní, jelikož PPP linky nemívají MAC adresy.
+
+		L2TP obsauje PPP autentizaci a správu účtů pro každé L2TP spojení. Úplná autentizace a správa účtů každého spojení může být zprovozněna skrze RADIUS klient nebo lokálně.
+
+		Jako ěifrovací metody jsou podporovány: MPPE 40bit RC4 a MPPE 128bit RC4.
+
+		Provoz L2TP používá UDP protokol pro kontrolní i datové pakety. UDP port 1701 je použit pouze pro navázání spojení, dalši provoz již procházi skrze jakýkoliv UDP port (který nemusí být 1701). To znamená, že L2TP může být použit s většinou firewallů a routerů (dokonce i s NAT) povolením UDP provozu, aby byl routován skrze firewall nebo router.
         \cite{l2tp_basics}
 
-\chapter{Zabezpečení}
+\chapter{Bezpečnost}
 
 \begin{conclusion}
 
-    TODO
+    
 
 \end{conclusion}
 
