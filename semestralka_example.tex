@@ -123,7 +123,7 @@
     \subsection{Multiprotocol Label Switching}
 
       \subsubsection{Popis}
-	  
+
 		  Multiprotokolové přepojování podle návěští (anglicky Multiprotocol Label Switching, MPLS) je mechanismus směrování síťového provozu používaný ve vysokorychlostních telekomunikačních sítích, který pro směrování dat mezi síťovými uzly nepoužívá relativně dlouhé a protokolově závislé síťové adresy, ale krátká návěští pevné délky.
 		  Tím se obchází prohledávání směrovacích tabulek. Návěští neidentifikují koncové body, ale virtuální spoje (cesty) mezi vzdálenými uzly. MPLS může zapouzdřovat pakety různých síťových protokolů a pro přenos používat nejrůznější technologie včetně linek T1 a E1, ATM, Frame Relay a DSL.
 
@@ -133,17 +133,17 @@
 		MPLS VPN dává síťovým správcům flexibilitu transportovat a routovat různé typy síťového provozu použitím technologií MPLS.
 
 		V praxi se pužívají 3 typy MPLS VPN:
-		
+
 		\begin{itemize}
 		  \item Point-to-point (Pseudowire)
 		  \item Layer 2 (VPLS)
 		  \item Layer 3 (VPRN)
 		\end{itemize}
-		
+
 		Point-to-Point MPLS VPN používají VLL (virtual leased lines - virtuální pronajaté linky) k poskytování point-to-point konektivity 2. úrovně mezi dvěma oblastmi. Ethernet, TDM a ATM rámce mohou být přenášeny (zaobaleny) v těchto VLL linkách.
-		
+
 		MPLS VPN úrovně 2 (Layer 2) nebo VPLS (virtuální privátní LAN služba - virtual private LAN service) nabízí "přepínač v cloudu". VPLS poskytuje možnost zozšířit VLAN mezi více vzdálenými oblastmi. VPN druhé úrovně jsou typicky použity k routování zvuku, videa a AMI provozu mezi stanicemi a datovými centry.
-		
+
 		MPLS VPN úrovně 3 nebo VPRN (virtuální privátní routovaná síť - virtual private routed network), využívá VRF 3. úrovně (VPN/virtuální routování a forwarding) k segmentování routovacích tabulek pro každého zákazníka služby.
 		Zákazník se spáruje s routerem poskytovatele služby a prohodí si routání, které se ukládá do speciálního zákaznického routovací tabulky. Multiprotokolové BGP (MP-BGP) je potřebné v cloudu k provozu služby, které zvyšuje komplexitu a náročnost implementace.
 		LMPLS VPN úrovně 3 nejsou typicky nasazovány na sítě poskytovatelů připojení kvůli jejich komplexitě however, VPN 3. úrovně se spíše používá k routování provozu mezi korporátními oblastmi a datacentry.
@@ -199,16 +199,16 @@
         Podpora PolarSSL je k dispozici od verze 2.3 a vyšší.\cite{openvpn_enc_3}
 
 	  \subsubsection{Zabezpečení}
-	  
+
 		OpenVPN nabízí mnoho interních zabezpečovacích prvků. Dokáže použít šifrování až do šířky 256 bitů pomocí knihovny OpenSSL, přesto však někteří poskytovatelé nabízejí nižší šířku aby dosáhli rychlejšího spojení (s šifrováním je spojen výpočetní overhead).\cite{openvpn_sec}
 		OpenVPN beží v uživatelském prostoru, nevyžaduje tedy zasahovat do IP stacku jádra. OpenVPN umí zanechat svá administrátorská práva, aby efektivně pracoval s nižšími oprávněními. Dále umí využít mlockall, aby předešel zápisu citlivých dat na disk v případě odložení (swapování), vstoupit do vězení typu chroot a aplikovat SELinux kontext po inicializaci.
 
 		Používá vlastní protokol postavený na SSL a TLS místo toho, aby podporoval IPSec, L2TP nebo PPTP. OpenVPN nabízí podporu smart čipových karet pomocí PKCS\#11 k autentizaci šifrovacími klíči.
-		
+
     \subsection{PPTP}
 
       \subsubsection{Popis}
-       
+
 		Point-to-Point tunelovací protokol (PPTP) je metoda pro implementování virtualních privátních sítí. PPTP používá kontrolné kanál přes TCP a GRE tunel obalující PPP pakety.
 
 		Specifikace PPTP nepopisuje šifrování nebo autentizační prvky a spoléhá na to, že Point-to-Point protokol bude provozován skrze tunel, aby se zajistily bezpečnostní funkcionalita.
@@ -216,14 +216,14 @@
 		Předpokládaný účel tohoto protokolu je poskytnout zabezpečení a vzdálený přístup na úrovni srovnatelný s jinými typickými VPN produkty.
 
 		Specifikace PPTP byla publikována v červenci 1999 v RFC 2637\cite{pptp_basics} a byla vyvinuta sdružením společností Microsoft, Ascend Communications, 3Com a dalších. PPTP nebylo navrhnuto ani schváleno jako standard komisí pro technickou stránku internetu (Internet Engineering Task Force).
-		
+
 	  \subsubsection{Bezpečnost PPTP}
-	  
+
 		PPTP bylo podrobeno mnoha bezpečnostním analýzám a v tomto protokolu byly nalezeny závažné bezpečnostní problémy.
 		Známe zranitelnosti souvisí s použitým ověřovacím protokolem PPP, s designem MPPE šifrování (Microsoft Point-to-Point Encryption) protokolu stejně jako s integrací autentizace mezi MPPE a PPP pro navázání klíče sezení (session key).\cite{pptp_unsec_1}\cite{pptp_unsec_2}
-		
+
     \subsection{L2TP}
-	
+
       \subsubsection{Popis}
 		L2TP je protokol pro zabezpeční tunelu k přenosu IP provozu použitím PPP. L2TP zaobaluje PPP ve virtualních linkách, které běží přes IP, Frame Relay nebo jiné protokoly.
 		L2TP používá PPP a MPPE k zašifrování spojení. Účel tohoto protokolu je umožnit provozu 2. vrstvy OSI modelu a koncovým bodům PPP ležet na jiných zařízeních spojených sítí s přepínáním paketů. S L2TP má uživatel spojení 2. vrstvy do přístupového koncetrátoru (access concentrator - LAC), což může být modem, ADSL DSLAM atd. a koncentrátor, který tuneluje individuální PPP rámce do (Network Access Server - NAS). Toto umožňuje vlastní zpracování PPP paketů oddělené od konců spojení 2. vrstvy. Z uživatelského pohledu není žádný funkční rozdíl mezi tím mít konce spojení 2. úrovně končíce v NASu přímo nebo při použití L2TP.
@@ -241,9 +241,31 @@
 
 \chapter{Bezpečnost}
 
-\begin{conclusion}
+Jak už bylo výše uvedeno, některé VPN provoz šifrují, jiné naopak počítají s tím, že se jejich provoz bude šifrovat na nižší úrovni, tedy, že bude šifrovaná linka, na které se privátní síť virtualizuje (ať už jakékoliv úrovně).
+To má za následek to, že subjekty používající VPN mohou opominout tuto zásadní vlastnost některých řešení. To však není zdaleka jediný problém bezpečnosti VPN. Spousta firem spoléhá na to, že provozem služeb na VPN jsou automaticky
+všechny služby zabezpečeny.\cite{sec_mta}
 
-    
+  \section{Spojení vzdálených poboček}
+
+  Vzdálené pobočky firem bývájí často spojeny pomocí VPN proto, aby bylo možné sdílet data i služby, které jsou pro všechny pobočky sdílené. Pomocí virtuální privatní síťe tak získavají zabezpečený prostor, kde mohou zpřístupnit veškeré tyto potřebné služby a data.
+
+    \subsection{Hrozba od poskytovatele}
+      Problém nastává, pokud firma využíva pro VPN např. linky 2. vrstvy OSI, která často znamená, že tato linka musí být spravována nějakým poskytovatelem. Pokud je VPN spravována právě poskytovatelem, pak se tímto společnost, která tuto službu využíva, automaticky stává
+      závislá na věrohodnosti poskytovatele. Pokud by poskytovatel pochybyl či došlo k nekalé činnosti ze strany poskytovatele, pak se firma stává velmi zranitelná ke škodám.
+
+    \subsection{Špatné nasazení}
+      Dalším problémem je nevhodné nasazení určitého typu VPN a zabezpečení služeb ve firmě. Je totiž nutné, aby stále na síti, i když šifrované, platili bezpečnostní pravidla pro zaměstnance. Tedy, že pokud případný útočník získá přístup do šifrovaného spojení více poboček,
+      nezíská tím automaticky přístup ke všem zdrojům. Toto je jeden z velkých problémů menších firem.\cite{sec_mta}
+
+    \subsection{Neupdatovaný software}
+      Stejně jako každý jiný software, je i VPN nutné udržovat aktuální. Je to zejména proto, že i když VPN je relativně bezpečné, stále často závisí na dalších knihovnách a jiných teoreticky zranitelných částech (např. Heart bleed). Zejména u firem je toto velký problém.
+
+    \subsection{Hrozba zevnitř}
+      
+
+\section{Práce z domova}
+
+\begin{conclusion}
 
 \end{conclusion}
 
