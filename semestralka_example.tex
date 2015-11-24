@@ -40,7 +40,7 @@
 \abstractCS
 {
   Virtuální privátní sítě (VPN) se staly nepochybně jednou z nejpoužívanějších metod, jak zajistit business v geograficky rozsáhlé společnosti či zabezpečit přístup k poskytovaným službám.
-  V této práci jsou popsány základy, jak VPN fungují a jak jsou implementovány v praxi. Dále se práce zabývá možnými hrozbami, kterým VPN musí čelit.
+  V této práci jsou popsány základy, jak VPN fungují a jak jsou implementovány v praxi. Dále se práce zabývá možnými hrozbami, kterým musí VPN čelit.
 }
 
 \abstractEN
@@ -146,7 +146,7 @@
 
 		MPLS VPN úrovně 3 nebo VPRN (virtuální privátní routovaná síť - virtual private routed network), využívá VRF 3. úrovně (VPN/virtuální routování a forwarding) k segmentování routovacích tabulek pro každého zákazníka služby.
 		Zákazník se spáruje s routerem poskytovatele služby a prohodí si routání, které se ukládá do speciálního zákaznického routovací tabulky. Multiprotokolové BGP (MP-BGP) je potřebné v cloudu k provozu služby, které zvyšuje komplexitu a náročnost implementace.
-		LMPLS VPN úrovně 3 nejsou typicky nasazovány na sítě poskytovatelů připojení kvůli jejich komplexitě however, VPN 3. úrovně se spíše používá k routování provozu mezi korporátními oblastmi a datacentry.
+		MPLS VPN úrovně 3 nejsou typicky nasazovány na sítě poskytovatelů připojení kvůli jejich komplexitě however, VPN 3. úrovně se spíše používá k routování provozu mezi korporátními oblastmi a datacentry.
 		\cite{mpls_rfc}\cite{mpls_guide}
   \section{OSI vrstva 3}
 
@@ -261,12 +261,30 @@ všechny služby zabezpečeny.\cite{sec_mta}
       Stejně jako každý jiný software, je i VPN nutné udržovat aktuální. Je to zejména proto, že i když VPN je relativně bezpečné, stále často závisí na dalších knihovnách a jiných teoreticky zranitelných částech (např. Heart bleed). Zejména u firem je toto velký problém.
 
     \subsection{Hrozba zevnitř}
-      
+      Může být zaměstnancem zanesený vir, či uživatelem vynesená data. V obojím případě zašifrovaný provoz VPN je naprosto zbytečný, pokud se ve společnosti na bezpečnost dostatečně nedbá.
 
-\section{Práce z domova}
+\section{Přístup zaměstnanců do firemní sítě}
+
+  Firmy často svým zaměstnancům dovolují, aby mohli pracovat z domova či pří výjezdech do zahraničí. Některé VPN umožnují vytvořit certifikáty a klíče potřebné k přihlášení. Jiné například vyžadují jméno či heslo.
+
+  \subsection{Práce z domova}
+
+    Je možné, pokud má firma volnější pracovní podmínky, aby zaměstnanci vykonávali pracovní náplň z domova. Ovšem při práci z domova je možné, že jejich vlastní počítač je zavirován či že do propůjčeného pracovního počítače si takový vir zavedou.
+
+  \subsection{Výjezdy do zahraňičí či jiné pracovní cesty}
+
+    Výjezdy do zahraňičí naopak znamenají, že pokud je zaměstnanec nucen zadávat přihlašovací údaje např. někde na veřejnosti, je možné, že se někdo kouká, co uživatel píše. Další hrozbou je možnost odcizení pracovního počítače, pokud jsou přihlašovací údaje dostupné jako soubor (certifikát + klíč). Tím pak útočník získává přístup plý přístup do sítě pod uživatelovými právy.
+    Pokud ale firma nedbá na oprávnění jednotlivých uživatelů, mohou být škody daleko rozsáhlější.
+
+  \section{Aktuální hrozby VPN}
+
+    Aktuální hrozby jsou především obavy např. z úst Snowdena \cite{snowden}, který naznačuje, že NSA pravděpodobně dokáže řešit efektivněji problémy, na kterých stojí dnešní šifrovací algoritmy. Pokud to dokáže NSA, pak by to mohl dokázat každý. Toto sice není jisté,
+    ale je více reálný fakt ten, že slabá šířka šifrovacích klíčů (prvočísel v případě RSA apod.) může být už s dnešními pokroky v prolamování šifer velký problém. \cite{short_key} Tot však není problém jen šifrování VPN, ale jakýchkoliv šifer obecně. Stejně tak VPN
+    ohrožují záměrně vložená zadní vrátka do různých algoritmů v open source knihovnách, jako se tomu stalo např. v OpenBSD.\cite{openbsd}
 
 \begin{conclusion}
-
+  Tato práce se snažila být praktičtější - vysvětlit pojem VPN a popsat hlavní dostupné implementace. Na začátku byly popsány starší VPN pracujících na nižších vrstvách OSI modelu a pozdějí byly popsány VPN na vyšších vrstvách, které jsou spíše mladší zaležitostí. V jednotlivých typech VPN byli popsány jejich prostředí a v případě těch zajímavějších i něco o jejich implementaci.
+  Na konci byli popsány hlavní faktory bezpečnosti VPN a jejich nejvetší hrozby. Dále pak úplně na konci byli popsány nejaktuálnější hrozby VPN. Autor této práce využil vlastní znalosti i již dostupné texty z internetu, které bez změny informace upravil a příslušné zdroje citoval.
 \end{conclusion}
 
 \bibliographystyle{csn690}
@@ -278,7 +296,38 @@ všechny služby zabezpečeny.\cite{sec_mta}
 % \printglossaries
 \begin{description}
 
-    \item[TODO] TODO
+    \item[VPN] Virtual Private Network
+    \item[ATM] Asynchronous Transfer Mode
+    \item[WAN] Wide Area Network
+    \item[MPLS] Multiprotocol Label Switching
+    \item[VoFR] Voice and Data over Frame Relay
+    \item[DSL] Digital Subscriber Line
+    \item[QoS] Quality of Service
+    \item[LAN] Local Area Network
+    \item[IP] Internet Protocol
+    \item[VPLS] Virtual Private LAN Service
+    \item[VPRN] Virtual Private Routed Network
+    \item[BGP] Border Gateway Protocol
+    \item[MP-BGP] Multiprotocol BGP
+    \item[IPsec] Internet Protocol Security
+    \item[TCP] Transmission Control Protocol
+    \item[TLS] Transport Layer Security
+    \item[SSH] Secure Shell
+    \item[NAT] Network Address Translation
+    \item[GNU] GNU's Not Unix
+    \item[GPL] General Public License
+    \item[HMAC] Hash-based Message Authentication Code
+    \item[PPTP] Point-to-Point Tunneling Protocol
+    \item[L2TP] Layer 2 Tunnelling Protocol
+    \item[PPP] Point-to-Point Protocol
+    \item[RFC] Request for Comments
+    \item[MPPE] Microsoft Point-to-Point Encryption
+    \item[NAS] Network-attached storage
+    \item[ADSL] Asymmetric digital subscriber line
+    \item[DSLAM] Digital Subscriber Line Access Multiplexer
+    \item[OSI] Open Systems Interconnection
+    \item[NSA] National Security Agency
+
 
 \end{description}
 
